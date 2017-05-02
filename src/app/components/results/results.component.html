@@ -1,0 +1,6 @@
+<h1>Results</h1>
+
+<div *ngIf="results" class="row">
+	<result-item *ngFor="let item of results" [item]="item"></result-item>
+
+</div>

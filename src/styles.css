@@ -1,0 +1,266 @@
+body {
+	color: rgba(255,255,255, 0.5);
+	font:100%/1.6 "Roboto",Helvetica;
+}
+
+h1 {
+  color: #369;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 250%;
+}
+
+.main {
+	padding: 30px 0;
+    background-image: linear-gradient(rgb(18, 18, 18), rgb(7, 7, 7) 85%);
+}
+
+
+.poster {
+	width: 100%;
+	height: 100%;
+}
+
+.artist-header {
+	padding-bottom: 20px;
+	margin-bottom: 20px;
+	border-bottom: solid 1px #333;
+	overflow: hidden;
+}
+
+.btn {
+	border: none;
+	outline: none;
+	background:none;
+	color:#fff;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	min-width: 140px;
+	border-radius: 140px !important;
+	transition:all 0.25s ease;
+}
+
+.btn-main {
+	background:#2ebd59;
+}
+
+.btn-blue {
+	color: #ffffff;
+    background-color: #0288d1;
+    border-color: #0288d1;
+    border-radius: 5px !important;
+}
+
+.btn-blue:hover {
+	background-color: #0288f1;
+    border-color: #0288f1;
+}
+
+
+.square {
+	border-radius: 4px !important;
+}
+.cover-info .btn-main:hover {
+	transform:scale(1.2);
+	background:#2ecf59;
+}
+
+.artist-thumb {
+	width: 80px;
+	height: auto;
+	float: left;
+	margin-right: 20px;
+}
+
+.artist-genres {
+	margin-left: 20px;
+	margin-top: 20px;
+	float: left;
+}
+
+.artist-albums .well {
+	margin-bottom: 20px;
+	overflow: auto;
+	min-height: 400px;
+	max-height: 420px;
+}
+
+@media screen and (max-width: 1000px) {
+		.artist-albums .well {
+			margin-bottom: 20px;
+			width: 80%;
+			margin: 30px auto;
+			
+		}
+
+		.album-thumb {
+			text-align: center;
+			width: 65%;
+			height: 250px !important;
+			margin-bottom: 20px;
+		}
+
+		.album h4 {
+			min-height: 50px !important;
+		}
+
+		.album .btn {
+			display: inline-block;
+			text-align: center;
+			width: 50%;
+		}
+}
+
+@media screen and (max-width: 800px) {
+		.artist-albums .well {
+			margin-bottom: 20px;
+			width: 100%;
+			margin: 30px auto;
+			overflow: hidden;
+
+		}
+
+		.album-thumb {
+			text-align: center;
+			width: 90%;
+			height: 250px !important;
+			margin-bottom: 20px;
+		}
+
+		.album h4 {
+			margin-bottom: 25px;
+		}
+
+		.album .btn {
+			display: inline-block;
+			text-align: center;
+			width: 80%;
+		}
+}
+
+.album {
+	text-align: center;
+	background:#333;
+	padding: 10px 20px;
+	border:#666 1px solid;
+}
+
+.song {
+	padding: 20px 0px;
+	color:#fff;
+	font-size: 1.2em;
+	min-height: 70px !important;
+}
+
+
+.song .play {
+	width: 30px;
+	font-size: 1.2em;
+	margin-right: 25px;
+	color:inherit;
+	display: none;
+	font-size: 1.1em;
+	vertical-align: middle;
+}
+
+.song .index {
+	width: 30px;
+	display: inline-block;
+	transition: all 0.25s ease;
+	color:rgba(255, 255, 255, 0.5);;
+	font-size: 1.1em;
+	margin-right: 25px;
+	vertical-align: middle;
+
+}
+.song.active .index{
+	display: none;
+}
+
+.song.active .play{
+	display: inline-block;
+}
+
+.cover-info {
+	max-width: 320px;
+	position: relative;
+}
+
+
+
+.cover-info .content {
+	position: fixed !important;
+	margin-top: 30px;
+	width: inherit;
+	max-width: inherit;
+}
+
+.cover-info {
+	text-align: center;
+}
+
+@media screen and (max-width: 1000px) {
+
+	.song-list {
+		font-size: .9em;
+	}
+
+	.index,.play {
+		margin-right: 0px !important;
+	}
+	body {
+		font-size: 1.5em !important;
+	}
+	.cover-info {
+		max-width: 100%;
+		position: relative;
+		margin-bottom: 50px;
+	}
+
+	.cover-info .content {
+		position: relative !important;
+		margin-top: 50px;
+		width: inherit;
+		max-width: inherit;
+	}
+
+	.cover-info img {
+		width: 100%;
+		margin-bottom: 20px;
+		max-height: 420px;
+	}
+}
+
+.cover-info img {
+	width: 100%;
+	margin-bottom: 20px;
+}
+
+.cover-info h4 {
+	font-size: 1.4em;
+}
+
+.cover-info .band-name {
+}
+
+
+
+.song-list {
+	margin-top: 20px;
+}
+
+.song:hover {
+	background-color: rgba(0,0,0,.3);
+}
+
+
+.song .duration {
+	float: right;
+	color:rgba(255, 255, 255, 0.5);;
+}
+
+
+
+.album h4 {
+	min-height: 85px;
+}
+
