@@ -36,7 +36,7 @@
 
 
 	function getMovies(search) {
-		fetch(`http://www.omdbapi.com?s=${search}`)
+		fetch(`https://www.omdbapi.com?s=${search}`)
 			.then((blob) => {
 				return blob.json();
 			})
