@@ -343,7 +343,6 @@ header {
       width: 100%; } }
   #examples a img {
     min-height: 400px;
-    max-height: 400px;
     width: 100%;
     transform-origin: 20% 20%; }
     #examples a img:hover {
