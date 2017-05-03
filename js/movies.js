@@ -36,7 +36,7 @@
 
 
 	function getMovies(search) {
-		fetch(`https://www.omdbapi.com?s=${search}`)
+		fetch(`//www.omdbapi.com?s=${search}`)
 			.then((blob) => {
 				return blob.json();
 			})
@@ -53,7 +53,7 @@
 							$("#results").append(`
 								<div class="movie">
 									<img src="${value.Poster}" class="poster"/>
-									<a href="http://www.omdbapi.com/?i=${value.imdbID}" class="title">${value.Title}</a>
+									<a href="//www.omdbapi.com/?i=${value.imdbID}" class="title">${value.Title}</a>
 									<p class="year">${value.Year}</p>
 								</div>
 							`);
