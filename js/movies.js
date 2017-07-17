@@ -6,6 +6,7 @@ let resultsDiv = document.querySelector("#results");
 let search = document.querySelector("#search");
 let singleView = document.querySelector("#singleView");
 let wrapper  = document.querySelector(".wrapper");
+let form = document.querySelector("form");
 
 let loginModal = document.querySelector(".login-modal");
 let registerModal = document.querySelector(".register-modal");
