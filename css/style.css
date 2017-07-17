@@ -12,13 +12,16 @@ body {
       font: 100%/1.65 "Open Sans", sans-serif; } }
   @media screen and (max-width: 1020px) {
     body {
-      font: 135%/1.65 "Open Sans", sans-serif; } }
+      font: 126%/1.65 "Open Sans", sans-serif; } }
   @media screen and (max-width: 640px) {
     body {
       font: 80%/1.65 "Open Sans", sans-serif; } }
 
 h1, h2, h3 {
   font-family: "Open Sans", sans-serif; }
+
+img {
+  display: block; }
 
 .wrap {
   overflow: hidden;
@@ -211,7 +214,8 @@ li {
 a {
   text-decoration: none;
   color: #0091ea;
-  transition: all .3s ease-out; }
+  transition: all .3s ease-out;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0); }
   a:hover {
     color: #ff1744; }
 
@@ -232,6 +236,9 @@ header {
     margin-right: 2em;
     display: none;
     color: #5385c1; }
+    @media screen and (max-width: 640px) {
+      header .nav-icon {
+        margin-right: 0.2em; } }
     header .nav-icon:after {
       line-height: 80px; }
   @media screen and (max-width: 1020px) {
@@ -254,7 +261,7 @@ header {
         height: 100vh;
         min-width: 45%;
         box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.4);
-        transition: all .3s ease-out;
+        transition: all .25s ease;
         transform: translate3d(100%, 0, 0); }
         header .main-nav li {
           margin-left: 1em;
@@ -267,8 +274,10 @@ header {
         header .main-nav .close {
           display: block; } }
   @media screen and (max-width: 640px) {
-    header .main-nav li {
-      font-size: 1.6em; }
+    header .main-nav {
+      width: 60%; }
+      header .main-nav li {
+        font-size: 1.6em; }
     header .nav-icon {
       font-size: 3em; } }
 
@@ -294,7 +303,7 @@ header {
     cursor: pointer;
     position: absolute;
     top: 0%;
-    right: 11%;
+    right: 15%;
     display: none;
     font-weight: bold;
     font-size: 1.5em; }
@@ -342,9 +351,14 @@ header {
     #examples a {
       width: 100%; } }
   #examples a img {
-    min-height: 400px;
+    min-height: 520px;
+    max-height: 520px;
     width: 100%;
     transform-origin: 20% 20%; }
+    @media screen and (max-width: 640px) {
+      #examples a img {
+        min-height: 300px;
+        max-height: 300px; } }
     #examples a img:hover {
       transform: scale(1.2) !important; }
 

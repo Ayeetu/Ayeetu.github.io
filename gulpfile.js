@@ -10,6 +10,10 @@ var gulp = require("gulp"),
     sourcemaps = require("gulp-sourcemaps"),
     gutil = require("gulp-util"),
     browserSync = require("browser-sync");
+    htmlmin = require('gulp-htmlmin');
+    cleanCSS = require('gulp-clean-css');
+
+
 
 var files = {
 	scssFiles:"./css/*.scss",
@@ -74,5 +78,17 @@ gulp.task("build-js",function() {
 		.pipe(sourcemaps.write())
 		.pipe(gulp.dest(files.js));
 })
+
+gulp.task('minify-html', () => {
+  return gulp.src('*.html')
+    .pipe(htmlmin({collapseWhitespace: true}))
+    .pipe(gulp.dest("./test"));
+});
+
+gulp.task('minify-css', () => {
+  return gulp.src(files.cssFiles)
+    .pipe(cleanCSS({compatibility: 'ie8'}))
+    .pipe(gulp.dest(files.cssFolder));
+});
 
 gulp.task("default",["serve"]);

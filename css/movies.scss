@@ -1,7 +1,8 @@
 $green: #37a272;
 $grey: #ababab;
 $desktop: 1320px;
-$tablet: 1020px;
+$tablet: 960px;
+$mobile: 720px;
 
 * {
 	margin: 0;
@@ -9,12 +10,28 @@ $tablet: 1020px;
 	box-sizing:border-box;
 }
 
+
+body, html {
+	height: 100%;
+}
+
 body {
 	color:#fff;
 	background:#151515;
 	font:100%/1.6 "Open Sans",sans-serif;
 	overflow-x:hidden;
+	@media screen and (max-width:$mobile) {
+		font-size:68%;
+	}
+	@media screen and (max-width:$tablet) {
+		font-size:63%;
+	}
+}
 
+.wrapper {
+	position: relative;
+	height: 100%;
+	overflow-x: hidden;
 }
 
 h1,h2,h3,h4 {
@@ -52,14 +69,40 @@ h1,h2,h3,h4 {
 	max-width: 70em;
 	margin: 5em auto;
 
-	@media screen and (max-width: 920px) {
-		width: 85%;
+	@media screen and (max-width: $mobile) {
+		width: 95%;
 		margin: 3em auto;
 	}
 }
 
+.result-wrap {
+	display: flex;
+	flex-direction:column;
+}
+
+.fade-in {
+	order:1 !important;
+	transform:translate3d(0,0,0) !important;
+	display: flex !important;
+	opacity: 1 !important;
+}
+
+
 a {
 	text-decoration: none;
+}
+
+.active {
+	color: $green !important;
+}
+
+.line {
+	width: 1.25em;
+	height: 0.11em;
+	margin-bottom: 0.25em;
+	background:#dedede;
+	display: block;
+	margin-right: 0.5em;
 }
 
 header {
@@ -74,12 +117,24 @@ header {
 
 	.nav-icon {
 		cursor: pointer;
+		outline: none;
 		display: none;
 		margin-left: auto;
+
+		&:active {
+			outline: none;
+		}
 	}
 
 	@media screen and (max-width: $tablet) {
 		font-size: 1.7em;
+		.nav-icon {
+			display: block;
+		}
+	}
+
+	@media screen and (max-width: $tablet) {
+		font-size: 2.2em;
 		.nav-icon {
 			display: block;
 		}
@@ -92,7 +147,14 @@ header {
 	padding: .5em 0em;
 	display: flex;
 	align-items:center;
+	position: relative;
+	@media screen and (max-width: $tablet) {
+		padding: 0.3em 1em;	
+	}
 
+	@media screen and (max-width: $mobile) {
+		padding: 0px 1em;	
+	}
 
 }
 
@@ -117,16 +179,22 @@ header {
 
 
 	@media screen and (max-width: $tablet) {
-		display: none;
+		display: flex;
 		position: absolute;
-		z-index: 1000;
-		top: 6%;
+		z-index: 100;
+		top: 100%;
+		left: 0;
 		font-size: .8em;
-		background:linear-gradient(#2b2b2b, #171717);;
+		opacity: 0;
+		transform:translate3d(0,-20%,0);
+		transition:all 0.2s ease;
+		background: linear-gradient(#1d1d1d, #0c0c0c);
 		width: 100%;
 		justify-content:space-around;
+		flex-wrap:wrap;
+		
 		li {
-			
+			padding: 0.3em;
 			&:last-child {
 				border-bottom: none;
 			}
@@ -139,11 +207,15 @@ header {
 		}
 
 	}
+
+	@media screen and (max-width: $mobile) {
+		margin: 0px -1.2em;	
+	}
 }
 
 .show-nav {
-	display: flex;
-
+	opacity: 1;
+	transform:translate3d(0,0,0);
 	@media screen and (max-width: $desktop) {
 		flex-direction:row;
 	}
@@ -178,10 +250,14 @@ h1 {
 }
 
 #results {
+	transition:all 0.4s cubic-bezier(0.215, 0.610, 0.355, 1.000);
 	display: flex;
+	opacity: 0;
+	order:2;
+	transform: translate3d(0,100%,0);
 	flex-wrap:wrap;
 	justify-content: flex-start;
-
+	
 
 	
 }
@@ -196,6 +272,13 @@ h1 {
 
 		font-size: 1.8em;
 	}
+
+	@media screen and (max-width: $mobile) {
+		flex:0 90%;
+		margin: 0 5% 2em 5%;
+
+		font-size: 1.8em;
+	}
 	&:last-child  {
 		margin-right: 0;
 	}
@@ -204,7 +287,6 @@ h1 {
 		margin-bottom: .5em;
 		min-height: 320px;
 		max-height: 320px;
-
 	}
 
 	.title {
@@ -224,7 +306,11 @@ h1 {
 }
 
 #singleView {
-	display: flex;
+	transform:translate3d(0px, -100%, 0);
+	transition:all 0.4s cubic-bezier(0.215, 0.610, 0.355, 1.000);
+	opacity: 0;
+	order:2;
+	padding-bottom: 3em;
 	flex-wrap:wrap;
 	justify-content: flex-start;
 	width: 95%;
@@ -237,6 +323,12 @@ h1 {
 		margin-right: 6%;
 		margin-bottom: 2em;
 		border:6px solid #2b2b2b;
+		max-height: 530px;
+	}
+
+	.runtime  {
+		color: $green;
+		display: inline-block;
 	}
 
 	.content {
@@ -320,6 +412,25 @@ h1 {
 		}
 	}
 
+	@media screen and (max-width: $mobile) {
+		width: 95%;
+		justify-content:center;
+		font-size: 2em;
+		.poster {
+			width: 95%;
+			margin-bottom: 2em;
+		}
+
+		.content {
+			width: 90%;
+			margin-bottom: 2em;
+		}
+
+		.actions {
+			order:3;
+		}
+	}
+
 	
 }
 
@@ -349,6 +460,18 @@ h1 {
 	transform: scale(0.8);
 	opacity: 0;
 
+	@media screen and (max-width: $tablet) {
+		left: 20%;
+		width: 60%;
+		padding-top: 6em;
+		min-height: 420px;
+	}
+
+	@media screen and (max-width: $mobile) {
+		left: 5%;
+		width: 90%;
+	}
+
 	h1 {
 		font-weight: 400;
 		font-size: 1.6em;
@@ -363,13 +486,13 @@ h1 {
 		font-size: 1.12em;
 		margin-bottom: 2em;
 		width: 95%;
+
+		@media screen and (max-width: $tablet) {
+			margin-bottom: 3em;
+			font-size: 1.6em;
+		}
 	}
 
-	@media screen and (max-width: $tablet) {
-		top: 18%;
-		width: 65%;
-		left: 17.5%;
-	}
 
 	
 }
@@ -400,6 +523,7 @@ h1 {
     padding: 3% 2%;
     top: 10%;
     right: 0;
+    z-index: 1000;
     width: 20%;
     height: 80vh;
     /* background: linear-gradient(#2b2b2b, #171717); */
@@ -429,10 +553,10 @@ h1 {
 	}
 
 	@media screen and (max-width: $tablet) {
-		width: 50%;
-		top: 18%;
-		font-size: 1.8em;
-		padding-left: 2em;
+		width: 65%;
+		top: 20%;
+		font-size: 1.6em;
+		padding: 2em 1.6em;
 		li {
 		}
 	}
@@ -476,7 +600,7 @@ h1 {
 	opacity: 0;
     position: absolute;
     top: 10%;
-    left: 37.5%;
+    left: 42.5%;
     background: rgba(42,45,50,0.85);;
     border-radius: 4px;
     padding: 22px;
@@ -501,8 +625,15 @@ h1 {
     }
 
     @media screen and (max-width: $tablet) {
-    	top: 45%;
-    	left: 25%;
-    	font-size: 2em;
+    	top: 25%;
+    	left: 20%;
+    	width: 50%;
+    	font-size: 2.4em;
     }
+
+    @media screen and (max-width: $mobile) {
+    	left: 10%;
+
+    }
+
 }

@@ -11,7 +11,6 @@ $hd:	 1280px;
 $tablet: 1020px;
 $mobile: 640px;
 
-
 * {
 	margin: 0;
 	padding: 0;
@@ -28,7 +27,7 @@ body {
 	 	font:100%/1.65 $fontFamily;
 	 } 
 	@media screen and (max-width: $tablet) {
-		font: 135%/1.65 $fontFamily;
+		font: 126%/1.65 $fontFamily;
 	}
 
 	@media screen and (max-width: $mobile) {
@@ -38,6 +37,10 @@ body {
 
 h1,h2,h3 {
 	font-family: $fontFamily;
+}
+
+img {
+	display: block;
 }
 
 .wrap {
@@ -328,6 +331,7 @@ a {
 	text-decoration: none;
 	color:$secondaryColor;
 	transition: all .3s ease-out;
+	-webkit-tap-highlight-color:rgba(255, 255, 255, 0); 
 	&:hover {
 		color:#ff1744;
 	}
@@ -354,6 +358,10 @@ header {
 		margin-right: 2em;
 		display: none;
 		color:$blue;
+
+		@media screen and (max-width: $mobile) {
+			margin-right: 0.2em;
+		}
 		&:after {
 			line-height: 80px;
 		}
@@ -382,7 +390,7 @@ header {
 			height: 100vh;
 			min-width: 45%;
 			box-shadow: 0px 0px 15px rgba(#000, 0.4);
-			transition: all .3s ease-out;
+			transition: all .25s ease;
 			transform:translate3d(100%,0,0);
 			li {
 				margin-left: 1em;
@@ -402,6 +410,7 @@ header {
 
 	@media screen and (max-width: $mobile) {
 		.main-nav {
+			width: 60%;
 			li {
 				font-size: 1.6em;
 			}
@@ -446,7 +455,7 @@ header {
 		cursor: pointer;
 		position: absolute;
 		top: 0%;
-		right: 11%;
+		right: 15%;
 		display: none;
 		font-weight: bold;
 		font-size: 1.5em;
@@ -511,10 +520,15 @@ header {
 			width: 100%;
 		}
 		img {
-			min-height: 400px;
-			max-height: 400px;
+			min-height: 520px;
+			max-height: 520px;
 			width: 100%;
 			transform-origin:20% 20%;
+
+			@media screen and (max-width: $mobile) {
+				min-height: 300px;
+				max-height: 300px;
+			}
 			&:hover {
 
 				transform:scale(1.2) !important;

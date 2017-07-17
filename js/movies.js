@@ -2,6 +2,10 @@ let loginBtn = document.querySelector(".login");
 let registerBtn = document.querySelector(".register");
 let logoutBtn = document.querySelector(".logout");
 let dashboardBtn = document.querySelector(".dashboard-btn");
+let resultsDiv = document.querySelector("#results");
+let search = document.querySelector("#search");
+let singleView = document.querySelector("#singleView");
+let wrapper  = document.querySelector(".wrapper");
 
 let loginModal = document.querySelector(".login-modal");
 let registerModal = document.querySelector(".register-modal");
@@ -23,6 +27,9 @@ let currentUser = localStorage.getItem("currentUser") || "";
 let navIcon = document.querySelector(".nav-icon");
 let mainNav = document.querySelector(".main-nav");
 
+let searchUrl = "https://api.themoviedb.org/3/search/movie?include_adult=false&page=1";
+let movieUrl = "https://api.themoviedb.org/3/movie/";
+let apiKey = "8fda8ba3a8080919d09bae737561b08c";
 
 // Functions
 
@@ -32,31 +39,61 @@ function flashMessage(msg) {
 
 }
 
+function scrollToElement(element, length, duration, t) {
+	if(duration < 0) return;
+
+	let ticks = t || 10;
+	let difference = length - element.scrollTop;
+	let perTick = difference / duration * ticks;
+	console.log(element.scrollTop, length);
+	if(!duration) var duration = 600;
+	setTimeout(function() {
+		element.scrollTop = element.scrollTop + perTick;
+
+		if(Math.ceil(element.scrollTop) === length) {
+			return;
+		} else {
+			scrollToElement(element, length, duration - 10, 10);
+		}
+		
+	},ticks);
+
+	return;
+}
+
 
 function getMovies(search) {
-	fetch(`//www.omdbapi.com?s=${search}`)
+	fetch(`${searchUrl}&api_key=${apiKey}&query=${search}`)
 		.then((blob) => {
 			return blob.json();
 		})
 		.then((data) => {
-			searchResults = data.Search;
-			$("#results").fadeIn(400, function() {
-					$("#singleView").fadeOut();
+			// get the array of movies
+			searchResults = data.results;
 
-			});
+			searchResults.sort(function(a, b) {
+				if (a.popularity > b.popularity)
+				    return -1;
+				  if (a.popularity < b.popularity)
+				    return 1;
+				  return 0;
+			})
+			// show the results div
+			resultsDiv.classList.add("fade-in");
+			singleView.classList.remove("fade-in");
 			if(searchResults) {
-				$("#results").html('');
+				// if we got results empty the last search results
+				resultsDiv.innerHTML = "";
+
+				// go over every object inside the array and populate the results Div
 				for(var value of searchResults) {
-					if(value.Type == "movie") {
-						$("#results").append(`
+						resultsDiv.innerHTML += `
 							<div class="movie">
-								<img src="${value.Poster}" class="poster"/>
-								<a href="//www.omdbapi.com/?i=${value.imdbID}" class="title">${value.Title}</a>
-								<p class="year">${value.Year}</p>
+								<img src="https://image.tmdb.org/t/p/w300/${value.poster_path}" class="poster" onerror="this.src='images/not_found.png';"/>
+								<a href="${movieUrl}${value.id}?api_key=${apiKey}" class="title">${value.title}</a>
+								<p class="year">${value.release_date.slice(0,4)}</p>
 							</div>
-						`);
-						
-					}
+						`;
 				}
 				
 			}
@@ -67,65 +104,89 @@ function getMovies(search) {
 		})
 }
 
-$("#search").on("input",(e) => {
+// we need to use event delegation beacuse we are searching for
+// dynamically created elements
+document.body.addEventListener("click", function(e) {
+	// only use fetch the page if we clicked on the movie link
+	if(e.target.className === "title") {
+		// get the movies url and fetch it
+		let href = e.target.href;
+		fetch(href)
+			.then(function(blob) { return blob.json()} )
+			.then(function(data) { 
+				// Hide the movie result and display the clicked movie infromation
+				resultsDiv.classList.remove("fade-in")
+				singleView.classList.add("fade-in");
 
-	let search = e.currentTarget.value;
+				document.body.scrollTop = 100;
 
-	getMovies(search);
-})
+				// to check if we already favorited a movie we go through all the favorite movies
+				// and compare them with the clicked movie then add the active class accordingly
+				favBtn = '<li class="ion-android-favorite"></li>';
 
-$("#results").on("click", ".title", function(e) {
-	let href = e.currentTarget.href
-	fetch(href)
-		.then(function(blob) { return blob.json()} )
-		.then(function(data) { 
-			console.log(data);
-			// Hide the movie result and display the clicked movie infromation
-			$("#results").fadeOut(400, function() {
-				$("#singleView").fadeIn();
-			});
-			$("#singleView").html(`
-				<img src="${data.Poster}" alt="" class="poster" />
-				<div class="content">
-					<h1 class="title">${data.Title}</h1>
-					<div class="meta">
-						<span class="year">${data.Year}</span>
-						<span class="runtime">${data.Runtime}</span>
-						<span class="score">IMDB:  <span class="green">${data.imdbRating} </span></span>
+				if(currentUser)
+					for(let i = 0; i < favorites[currentUser].length; i++) {
+						if(data.title === favorites[currentUser][i]) favBtn = '<li class="ion-android-favorite active"></li>'
+					}
+
+				singleView.innerHTML = `
+					<img src="https://image.tmdb.org/t/p/w500${data.poster_path}" class="poster" onerror="this.src='images/not_found.png';"/>
+					<div class="content">
+						<h1 class="title">${data.title}</h1>
+						<div class="meta">
+							<span class="year">${data.release_date.slice(0,4)}</span>
+						</div>
+						<span class="runtime">${data.runtime} minutes</span> 
+						<p class="description">${data.overview}</p>
 					</div>
-					<p class="description">${data.Plot}</p>
-				</div>
-				<ul class="actions">
-					<li class="ion-android-favorite"></li>
-				</ul>
-			`)
+					<ul class="actions">
+						${favBtn}
+					</ul>
+				`;
 
-			// add a click on favorite so we can add the movies to our list
-			// we need to create the listener only after the element has 
-			// been created
 
-			favorite = document.querySelector(".actions li");
 
-			favorite.addEventListener("click",function() {
-				let title = document.querySelector("#singleView .title").textContent;
+				// add a click on favorite so we can add the movies to our list of favorites
+				// we need to create the listener only after the element has been created beacause 
+				// it dosent exist before that
+				favorite = document.querySelector(".actions li");
 
-				// push the title to the favorites array
-				console.log(favorites[currentUser]);
-				favorites[currentUser].push(title);
-				localStorage.setItem("favorites", JSON.stringify(favorites));
+				// scroll to the top of the window so we can see the movie infromation
+				wrapper.scrollTop = 0;
 
-				// Create an li and push it to the favorite movies list
-				let li  = document.createElement("li");
-				li.textContent = title;
-				dashboard.querySelector(".fav-movies").appendChild(li);
-			})
-			
+				favorite.addEventListener("click",function() {
+					let title = document.querySelector("#singleView .title").textContent;
+					let duplicate = false; // flag which is checked if we will add a new movie to favorites
 
-		 });
+					// go over the favorites and check if the clicked movie is already favorited
+					// set the duplicate flag to true if it is
+					for(let i = 0; i < favorites[currentUser].length; i++) {
+						if(title === favorites[currentUser][i])  {
+							duplicate = true;
+							break;
+						}
 
-	
+					}
+					// only push the title to the array of favorites if it dosent already exist
+					if(!duplicate) {
+						favorites[currentUser].push(title);
+						localStorage.setItem("favorites", JSON.stringify(favorites));
+
+						// Create an li and push it to the favorite movies list
+						let li  = document.createElement("li");
+						li.textContent = title;
+						dashboard.querySelector(".fav-movies").appendChild(li);
+
+						// make the favorite button green
+						favorite.classList.add("active");
+					}
+
+				})
+				
+			 });	
+	}
+
 	e.preventDefault();
-
 
 })
 
@@ -141,17 +202,18 @@ function showRegisterModal() {
 }
 
 function registerUser() {
-	let username = registerModal.querySelector("input[type=text]").value;
+	let username = registerModal.querySelector("input[type=text]");
+	let password = registerModal.querySelector("input[type=password]");
 
 	// Error Checking
-	if(username.length < 3 || username.length > 20) {
+	if(username.value.length < 3 || username.value.length > 20) {
 		flashMessage("username needs to be between 3 and 20 characters long");
 		return;
 	}
 
 	// Check if user already exists 
 	for (var i = users.length - 1; i >= 0; i--) {
-		if(users[i] === username) {
+		if(users[i] === username.value) {
 
 			flashMessage("A user with that username already exists please choose antoher");
 			return;
@@ -161,10 +223,17 @@ function registerUser() {
 	// The user does not exist push him onto the users array
 	// which will be in turn stored on localStorage
 	flashMessage("You have successfully registered!");
-	users.push(username);
+	// clear the username input value
+
+	users.push(username.value);
 	localStorage.setItem("users", JSON.stringify(users));
-	localStorage.setItem("currentUser", username);
-	favorites[username] = [];
+	localStorage.setItem("currentUser", username.value);
+	favorites[username.value] = [];
+
+	// clear the username and password fields
+	username.value = "";
+	password.value = "";
+	// add the favorites array 
 	localStorage.setItem("favorites", JSON.stringify(favorites));
 	registerModal.classList.remove("show");
 
@@ -177,8 +246,8 @@ function signIn() {
 	displayUsername.querySelector("span").textContent = username;
 	displayUsername.classList.add("display");
 
-	loginBtn.parentNode.classList.remove("display");
-	loginBtn.parentNode.classList.add("hide");
+	loginBtn.classList.remove("display");
+	loginBtn.classList.add("hide");
 	dashboardBtn.classList.add("display");
 	loginModal.classList.remove("show");
 	logoutBtn.classList.add("display");
@@ -188,18 +257,26 @@ function signIn() {
 	populateFavorites();
 	flashMessage("You have been logged in");
 
+	// clear the username and the password 
+	let u = loginModal.querySelector("input[type='text']");
+	let p = loginModal.querySelector("input[type='password']");
+	u.value = "";
+	p.value = "";
+
 }
 
 
 function loginUser() {
-	let username = loginModal.querySelector("input[type='text']").value;
+	let username = loginModal.querySelector("input[type='text']");
+
 
 	if(users.length === 0) {
 		flashMessage("that user does not exist!");
 	}
 	for (var i = users.length - 1; i >= 0; i--) {
-		if(users[i] === username) {
-			localStorage.setItem("currentUser", username);
+		if(users[i] === username.value) {
+			localStorage.setItem("currentUser", username.value);
+			// call the sign in function if we find the user inside the users array
 			signIn();
 			return;
 		} else {
@@ -214,14 +291,13 @@ function loginUser() {
 function logoutUser() {
 
 	this.classList.remove("display");
-	loginBtn.parentNode.classList.add("display");
+	loginBtn.classList.add("display");
 	displayUsername.classList.remove("display");
 	dashboardBtn.classList.remove("display");
+	dashboard.classList.remove("slide-in");
 	localStorage.removeItem("currentUser");
 
 	flashMessage("You have been logged out");
-
-
 }
 
 function toggleDashboard() {
@@ -233,15 +309,11 @@ function populateFavorites() {
 	// If the user is logged in populate the list
 	if(currentUser) {
 		for (var i = 0; i <= favorites[currentUser].length - 1; i++) {
-			
-
 			let li  = document.createElement("li");
 			li.textContent = favorites[currentUser][i];
 			dashboard.querySelector(".fav-movies").appendChild(li);
-
 		}
 	}
-
 	return;
 }
 
@@ -258,6 +330,12 @@ dashboardBtn.addEventListener("click", toggleDashboard);
 loginSbmt.addEventListener("click", loginUser);
 
 registerSbmt.addEventListener("click", registerUser);
+
+
+search.addEventListener("input", function(e) {
+	// serach for movies with the value of the search input
+	getMovies(this.value);
+})
 
 
 message.addEventListener("animationend",function(e) {

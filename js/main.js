@@ -15,34 +15,23 @@ let examples = document.getElementById("examples");
 let homeBtn = document.querySelector("a[href*='home']");
 // Functions
 
-function scrollToElement(element, to, duration) {
-	console.log(element,to,duration);
-	if(duration <= 0) return;
+function scrollToElement(element, length, duration) {
+	if(duration < 0) return;
 
-	let difference = to - element.scrollTop;
-	let perTick = difference / duration * 10;;
-
-
-	if(!duration) var duration = 600;
-	setTimeout(function() {
-		element.scrollTop = element.scrollTop + perTick;
-
-		if(element.scrollTop === to) {
-			console.log("reached target!");
-			return;
-		} else {
-			console.log("didnt reach target");
-			scrollToElement(element, to, duration - 10);
-		}
-		
-	},10);
-
-	return;
+	let left = length - element.pageYOffset;
+	let calc = left / (duration / 10);
+	let scrollInt = setInterval(function() {
+		left = Math.abs(left) - Math.abs(calc);
+		console.log(left);
+		element.scroll(0, element.pageYOffset + calc);
+		if(left < 0) 
+			clearInterval(scrollInt);
+	}, 10)
 }
 
 function scrollEvt(e) {
    let scroll = document.body.scrollTop;
-   if(scroll >= 80) {
+   if(scroll >= 0) {
    		header.classList.add("fixed");
    } else {
    		header.classList.remove("fixed");
@@ -62,17 +51,17 @@ closeNav.addEventListener("click",function() {
 })
 
 homeBtn.addEventListener("click",function(e) {
-	scrollToElement(document.body, 0 , 600);
+	scrollToElement(window, 0 , 600);
 	e.preventDefault();
 })
 
 contactBtn.addEventListener("click", function(e) {
-	scrollToElement(document.body, contact.offsetTop, 600);
+	scrollToElement(window, contact.offsetTop, 600);
 	e.preventDefault();
 });
 
 examplesBtn.addEventListener("click", function(e) {
-	scrollToElement(document.body, examples.offsetTop, 600);
+	scrollToElement(window, examples.offsetTop, 600);
 	e.preventDefault();
 });
 
