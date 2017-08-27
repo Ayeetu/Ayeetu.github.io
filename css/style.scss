@@ -1,15 +1,29 @@
 $mainColor:#4db6ac;
-$secondaryColor:#0091ea;
 $fontFamily:"Open Sans",sans-serif;
 $fontFamily2: "Ubuntu", sans-serif;
-$linkColor:#444;
+$linkColor:#0091ea;
 $textColor1:#333;
 $blue: #5385c1;
 $orange: #333;
 $fullHd: 1600px;
 $hd:	 1280px;
 $tablet: 1020px;
-$mobile: 640px;
+$mobile: 760px;
+
+%clearfix {
+    *zoom: 1;
+    &:before,
+    &:after {
+        display: table;
+        content: "";
+        // Fixes Opera/contenteditable bug:
+        // http://nicolasgallagher.com/micro-clearfix-hack/#comment-36952
+        line-height: 0;
+    }
+    &:after {
+        clear: both;
+    }
+}
 
 * {
 	margin: 0;
@@ -17,12 +31,14 @@ $mobile: 640px;
 	box-sizing:border-box;
 }
 
+html,body {
+	overflow-x: hidden;
+}
+
 body {
 
 	font: 100%/1.65 $fontFamily;
 	color:$textColor1;
-	overflow-x: hidden;
-
 	@media screen and (max-width: $hd) {
 	 	font:100%/1.65 $fontFamily;
 	 } 
@@ -85,17 +101,9 @@ img {
 
 // Floats
 
-.row:after {
-     visibility: hidden;
-     display: block;
-     font-size: 0;
-     content: " ";
-     clear: both;
-     height: 0;
-     }
+
 .row { 
-	clear: both;
-	display: inline-block;
+	@extend %clearfix;
 	margin: 0 0 -1px -1.5em;
  }
 /* start commented backslash hack \*/
@@ -329,7 +337,7 @@ li {
 
 a {
 	text-decoration: none;
-	color:$secondaryColor;
+	color:$linkColor;
 	transition: all .3s ease-out;
 	-webkit-tap-highlight-color:rgba(255, 255, 255, 0); 
 	&:hover {
@@ -392,6 +400,7 @@ header {
 			box-shadow: 0px 0px 15px rgba(#000, 0.4);
 			transition: all .25s ease;
 			transform:translate3d(100%,0,0);
+
 			li {
 				margin-left: 1em;
 				margin-bottom: 1.2em;
@@ -405,6 +414,11 @@ header {
 			.close {
 				display: block;
 			}
+		}
+	}
+	@media screen and (max-width: $tablet) {
+		.main-nav {
+			width: 50%;
 		}
 	}
 
@@ -459,10 +473,15 @@ header {
 		display: none;
 		font-weight: bold;
 		font-size: 1.5em;
-
+		transition:color .2s ease;
 		@media screen and (max-width: $mobile) {
-			top: -5%;
+			top: -3%;
+			right:10%;
 			font-size: 2em;
+		}
+
+		&:hover {
+			color:$linkColor;
 		}
 	}
 }
@@ -475,7 +494,6 @@ header {
 }
 
 #banner {
-
 	text-align: center;
 	background: url("https://images.unsplash.com/photo-1470218091926-22a08a325802?dpr=1&auto=format&fit=crop&w=1500&h=842&q=80&cs=tinysrgb&crop=") no-repeat;
 	background-size:cover;

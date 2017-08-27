@@ -1,19 +1,30 @@
+.row {
+  *zoom: 1; }
+  .row:before, .row:after {
+    display: table;
+    content: "";
+    line-height: 0; }
+  .row:after {
+    clear: both; }
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box; }
 
+html, body {
+  overflow-x: hidden; }
+
 body {
   font: 100%/1.65 "Open Sans", sans-serif;
-  color: #333;
-  overflow-x: hidden; }
+  color: #333; }
   @media screen and (max-width: 1280px) {
     body {
       font: 100%/1.65 "Open Sans", sans-serif; } }
   @media screen and (max-width: 1020px) {
     body {
       font: 126%/1.65 "Open Sans", sans-serif; } }
-  @media screen and (max-width: 640px) {
+  @media screen and (max-width: 760px) {
     body {
       font: 80%/1.65 "Open Sans", sans-serif; } }
 
@@ -58,17 +69,7 @@ img {
 .cf {
   *zoom: 1; }
 
-.row:after {
-  visibility: hidden;
-  display: block;
-  font-size: 0;
-  content: " ";
-  clear: both;
-  height: 0; }
-
 .row {
-  clear: both;
-  display: inline-block;
   margin: 0 0 -1px -1.5em; }
 
 /* start commented backslash hack \*/
@@ -102,7 +103,7 @@ img {
   clear: none;
   width: calc(100% / 4); }
 
-@media screen and (max-width: 640px) {
+@media screen and (max-width: 760px) {
   .col-6 {
     clear: none;
     width: 100%;
@@ -236,7 +237,7 @@ header {
     margin-right: 2em;
     display: none;
     color: #5385c1; }
-    @media screen and (max-width: 640px) {
+    @media screen and (max-width: 760px) {
       header .nav-icon {
         margin-right: 0.2em; } }
     header .nav-icon:after {
@@ -273,7 +274,10 @@ header {
           border-bottom: 1px solid rgba(0, 0, 0, 0.1); }
         header .main-nav .close {
           display: block; } }
-  @media screen and (max-width: 640px) {
+  @media screen and (max-width: 1020px) {
+    header .main-nav {
+      width: 50%; } }
+  @media screen and (max-width: 760px) {
     header .main-nav {
       width: 60%; }
       header .main-nav li {
@@ -286,7 +290,7 @@ header {
 
 .title {
   float: left; }
-  @media screen and (max-width: 640px) {
+  @media screen and (max-width: 760px) {
     .title {
       font-size: 3em; } }
 
@@ -306,11 +310,15 @@ header {
     right: 15%;
     display: none;
     font-weight: bold;
-    font-size: 1.5em; }
-    @media screen and (max-width: 640px) {
+    font-size: 1.5em;
+    transition: color .2s ease; }
+    @media screen and (max-width: 760px) {
       .main-nav .close {
-        top: -5%;
+        top: -3%;
+        right: 10%;
         font-size: 2em; } }
+    .main-nav .close:hover {
+      color: #0091ea; }
 
 .fixed {
   position: fixed;
@@ -327,7 +335,7 @@ header {
   min-height: 420px;
   text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
   margin-top: 80px; }
-  @media screen and (max-width: 640px) {
+  @media screen and (max-width: 760px) {
     #banner {
       padding-top: 100px;
       font-size: 1.4em; } }
@@ -355,7 +363,7 @@ header {
     max-height: 520px;
     width: 100%;
     transform-origin: 20% 20%; }
-    @media screen and (max-width: 640px) {
+    @media screen and (max-width: 760px) {
       #examples a img {
         min-height: 300px;
         max-height: 300px; } }
@@ -436,7 +444,7 @@ header {
     .private span {
       display: block;
       margin-bottom: .3em; } }
-  @media screen and (max-width: 640px) {
+  @media screen and (max-width: 760px) {
     .private {
       font-size: 1.4em; }
       .private span {

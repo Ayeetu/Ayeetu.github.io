@@ -357,3 +357,4 @@ navIcon.addEventListener("click",function() {
 if(localStorage.getItem("currentUser")) {
 	signIn();
 }
+

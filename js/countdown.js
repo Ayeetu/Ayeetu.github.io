@@ -1,4 +1,5 @@
 (function() {
+	// variable declarations
 	const timeLeft = document.querySelector(".display__time-left");
 	const endTime  = document.querySelector(".display__end-time");
 	const timerControls = document.querySelectorAll("[data-time]");
@@ -6,12 +7,13 @@
 	let time = 0;
 	// Global variable where we store the setInterval id;
 	let ctdwn;
+	// our sound that plays when the timer runs out
 	const alarmSound = new Audio("content/default.mp3");
 
 	function startTimer(time) {
-		// Stop the sound from playing if we click 
-		// (if we click another button while the sound is playing)
+		// Stop the sound from playing if we click another button while the sound is playing
 		alarmSound.pause();
+		alarmSound.volume = 0.3;
 		alarmSound.currentTime = 0;
 
 		// set the end timer to the current time plus the timers value
@@ -38,7 +40,6 @@
 		// Clear the interval from the global ctdwn variable
 		clearInterval(ctdwn);
 		
-
 		// Get the time from the data attribute on the clicked button
 		time = this.getAttribute("data-time");
 		let formatedTime = formatTime(time);
@@ -47,14 +48,23 @@
 		// Start the timer which starts the setInterval
 		startTimer(time);
 
-
 	}
 
 	function handleInput(e) {
-	     	clearInterval(ctdwn);
-			const minutes = e.currentTarget.value * 60;
-			time = minutes;
-			let formatedTime = formatTime(minutes);
+			// If the entered value if not a number display a message to the user
+			// clear the countdown interval in case it was already running and return from the function
+			if(Number.isNaN(parseInt(e.currentTarget.value))) {
+				timeLeft.innerHTML = "";
+				endTime.innerHTML  = "Please enter a valid numeric value (in minutes)";
+				clearInterval(ctdwn);
+				return;
+			}
+			// stop any previous running timers
+			clearInterval(ctdwn);
+			// convert the entered minutes into seconds since we are using seconds in the formatTime function 
+			const seconds = e.currentTarget.value * 60;
+			time = seconds;
+			let formatedTime = formatTime(seconds);
 			timeLeft.innerHTML = formatedTime;
 			startTimer(time);
 			e.preventDefault();
