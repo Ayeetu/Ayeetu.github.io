@@ -22,7 +22,6 @@ function scrollToElement(element, length, duration) {
 	let calc = left / (duration / 10);
 	let scrollInt = setInterval(function() {
 		left = Math.abs(left) - Math.abs(calc);
-		console.log(left);
 		element.scroll(0, element.pageYOffset + calc);
 		if(left < 0) 
 			clearInterval(scrollInt);

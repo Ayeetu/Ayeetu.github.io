@@ -1,3 +1,4 @@
+// variables 
 let loginBtn = document.querySelector(".login");
 let registerBtn = document.querySelector(".register");
 let logoutBtn = document.querySelector(".logout");
@@ -34,19 +35,22 @@ let apiKey = "8fda8ba3a8080919d09bae737561b08c";
 
 // Functions
 
+// flashes a message to the screen by adding a flash class to the message div
+// we listen on the animationend event to fade out the message
 function flashMessage(msg) {
 	message.children[0].textContent = msg;
 	message.classList.add("flash");
 
 }
 
+// vanilla javascript smooth scroll to implementation
+// element = the element to scroll, length = how many pixels do we scroll the element
+// duration = scroll duration miliseconds, t = interval
 function scrollToElement(element, length, duration, t) {
 	if(duration < 0) return;
-
 	let ticks = t || 10;
 	let difference = length - element.scrollTop;
 	let perTick = difference / duration * ticks;
-	console.log(element.scrollTop, length);
 	if(!duration) var duration = 600;
 	setTimeout(function() {
 		element.scrollTop = element.scrollTop + perTick;
@@ -58,11 +62,10 @@ function scrollToElement(element, length, duration, t) {
 		}
 		
 	},ticks);
-
 	return;
 }
 
-
+// get the using from the movie database api pass in the search query (api key is needed on this api)
 function getMovies(search) {
 	fetch(`${searchUrl}&api_key=${apiKey}&query=${search}`)
 		.then((blob) => {
@@ -72,6 +75,7 @@ function getMovies(search) {
 			// get the array of movies
 			searchResults = data.results;
 
+			// sort the movies array by popularity
 			searchResults.sort(function(a, b) {
 				if (a.popularity > b.popularity)
 				    return -1;
@@ -79,7 +83,7 @@ function getMovies(search) {
 				    return 1;
 				  return 0;
 			})
-			// show the results div
+			// show the results div and fade out the single movie details if it was open beforehand
 			resultsDiv.classList.add("fade-in");
 			singleView.classList.remove("fade-in");
 			if(searchResults) {
@@ -109,7 +113,8 @@ function getMovies(search) {
 // dynamically created elements
 document.body.addEventListener("click", function(e) {
 	// only use fetch the page if we clicked on the movie link
-	if(e.target.className === "title") {
+	console.log(e.target.matches("a.title"));
+	if(e.target.className === "title" && e.target.tagName === "A") {
 		// get the movies url and fetch it
 		let href = e.target.href;
 		fetch(href)
@@ -119,10 +124,12 @@ document.body.addEventListener("click", function(e) {
 				resultsDiv.classList.remove("fade-in")
 				singleView.classList.add("fade-in");
 
+				// scroll to 100px from the top of the window in case we scrolled down too much
 				document.body.scrollTop = 100;
 
 				// to check if we already favorited a movie we go through all the favorite movies
 				// and compare them with the clicked movie then add the active class accordingly
+				// we add or remove the favorite button accordingly
 				favBtn = '<li class="ion-android-favorite"></li>';
 
 				if(currentUser)
@@ -149,7 +156,7 @@ document.body.addEventListener("click", function(e) {
 
 				// add a click on favorite so we can add the movies to our list of favorites
 				// we need to create the listener only after the element has been created beacause 
-				// it dosent exist before that
+				// it would not work before that beacuse it doesn't exist
 				favorite = document.querySelector(".actions li");
 
 				// scroll to the top of the window so we can see the movie infromation
